@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Container,Image, Button } from "react-bootstrap";
-
+import { Container, Image, Button } from "react-bootstrap";
 
 class Profile extends Component {
   // rccp: react class component
@@ -19,41 +18,37 @@ class Profile extends Component {
         profession: "IT Engineer",
       },
       shows: "true",
-      currentCount: 0
+      count: 0,
     };
 
-    console.log("Profile is Initialised!")
-    
+    console.log("Profile is Initialised!");
   }
 
   OnToogle = () => {
     this.setState({
       shows: !this.state.shows,
     });
+  };
+
+  componentDidMount() {
+    setInterval(() => {
+      if (!this.state.show) {
+        this.setState({ count: this.state.count + 1 });
+      } else {
+        this.setState({ count: 0 });
+      }
+    }, 1000);
+    console.log("Profile is Mounted!");
   }
-
-  timer = () => {
-    this.setState({
-      currentCount: this.state.currentCount + 1
-    })
+  componentDidUpdate() {
+    console.log("Profile is Updated!");
   }
-
- 
-
-componentDidMount(){
-  this.intervalId = setInterval(this.timer.bind(this), 1000);
-  console.log("Profile is Mounted!")
-}
-componentDidUpdate(){
-  console.log("Profile is Updated!")
-}
-
 
   render() {
-    console.log("Profile is Rendred on the DOM!")
+    console.log("Profile is Rendred on the DOM!");
     return (
       <div>
-        {this.state.shows && (
+        {this.state.shows ? (
           <Container style={this.styles}>
             <Image
               style={{ variant: "top", width: "250px", height: "280px" }}
@@ -62,20 +57,22 @@ componentDidUpdate(){
             />
             <h1>{this.state.Person.fullName}</h1>
             <span>{this.state.Person.bio}</span>
-            <hr/>
+            <hr />
             <h3>{this.state.Person.profession}</h3>
           </Container>
+        ) : (
+          <span style={{ fontStyle: "italic", color: "purple" }}>
+            {this.state.count}
+          </span>
         )}
-        <br/>
+        <br />
         <Button
           onClick={this.OnToogle}
-          style={{ size: "lg", marginBottom: "20px" }}
+          style={{ size: "lg", marginTop: "20px", marginBottom: "20px" }}
           variant="info"
         >
           Toogle
         </Button>
-        <br/>
-        <span style={{fontStyle: "italic",color: "purple",}}>{this.state.currentCount}</span>
       </div>
     );
   }
